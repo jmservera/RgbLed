@@ -1,0 +1,3 @@
+[submodule "BusProviders"]
+	path = BusProviders
+	url = https://github.com/jmservera/BusProviders
