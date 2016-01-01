@@ -40,7 +40,7 @@ namespace RgbLed
 
         private void Timer_Tick(object sender, object e)
         {
-            switch (_counter++ % 4)
+            switch (_counter++ % 5)
             {
                 case 0:
                     _led.Color = Colors.Red;
@@ -50,6 +50,9 @@ namespace RgbLed
                     break;
                 case 2:
                     _led.Color = Colors.Orange;
+                    break;
+                case 3:
+                    _led.Color = Colors.Turquoise;
                     break;
                 default:
                     _led.Color = Colors.Green;
