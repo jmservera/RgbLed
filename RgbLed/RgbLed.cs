@@ -10,14 +10,10 @@ namespace RgbLed
 {
     public class RgbLed : IDisposable
     {
-        PwmPin _redPin, _greenPin, _bluePin;
         PwmPin[] _pins;
         public RgbLed(PwmPin redPin, PwmPin greenPin, PwmPin bluePin)
         {
-            _redPin = redPin;
-            _greenPin = greenPin;
-            _bluePin = bluePin;
-            _pins = new[] { _redPin, _greenPin, _bluePin };
+            _pins = new[] { redPin, greenPin, bluePin };
         }
 
         public void On()

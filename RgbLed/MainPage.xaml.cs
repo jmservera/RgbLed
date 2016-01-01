@@ -1,8 +1,10 @@
-﻿using System;
+﻿using PwmSoftware;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Pwm;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -23,29 +25,61 @@ namespace RgbLed
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        RgbLed _led;
+        DispatcherTimer _timer;
+        int _counter;
+
         public MainPage()
         {
             this.InitializeComponent();
             this.Loaded += MainPage_Loaded;
             this.Unloaded += MainPage_Unloaded;
+            _timer = new DispatcherTimer();
+            _timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, object e)
+        {
+            switch (_counter++ % 4)
+            {
+                case 0:
+                    _led.Color = Colors.Red;
+                    break;
+                case 1:
+                    _led.Color = Colors.Yellow;
+                    break;
+                case 2:
+                    _led.Color = Colors.Orange;
+                    break;
+                default:
+                    _led.Color = Colors.Green;
+                    break;
+            }    
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var pwmProvider = PwmSoftware.PwmProviderSoftware.GetPwmProvider();
-            var controller=(await Windows.Devices.Pwm.PwmController.GetControllersAsync(pwmProvider)).FirstOrDefault();
-            if(controller!= null)
+            var controller=(await PwmController.GetControllersAsync(PwmProviderSoftware.GetPwmProvider())).FirstOrDefault();
+            if (controller!= null)
             {
+                controller.SetDesiredFrequency(100);
                 var pinR = controller.OpenPin(5);
                 var pinG = controller.OpenPin(6);
                 var pinB = controller.OpenPin(7);
-                var led = new RgbLed(pinR, pinG, pinB);
-                led.On();
-                led.Color = Colors.LimeGreen;
+                _led = new RgbLed(pinR, pinG, pinB);
+                _led.Color = Colors.Green;
+                _led.On();
             }
         }
+
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            if(_led!= null)
+            {
+                _led.Off();
+                _led.Dispose();
+                _led = null;
+            }
         }
     }
 }
