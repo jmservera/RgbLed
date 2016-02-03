@@ -17,5 +17,5 @@ For this example we will use the software modulation found in the [PWM library](
 
 ## Wiring
 Experimenting right now with the wiring like here:
-![RGB Led wiring](https://raw.githubusercontent.com/geerlingguy/raspberry-pi-dramble/master/images/rgb-led-wiring.jpg)
+![RGB Led wiring](content/rgbled.png)
 
