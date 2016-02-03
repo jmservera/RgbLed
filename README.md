@@ -2,7 +2,12 @@
 
 A Windows IoT Core RBG Led sample using the [PWM library](https://github.com/ms-iot/BusProviders/tree/develop/PWM)
 
-> Draft: Not yet finished, will have a complete working sample in a couple of days.
+When you clone this repository remember to clone the submodules as well:
+
+```
+git clone --recursive https://github.com/jmservera/RgbLed.git
+```
+
 
 ## The RGB values
 For controlling the intensity of the RGB values in the GPIO pins, a Pulse Width Modulation (PWM) is needed.
