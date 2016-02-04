@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Devices.Pwm;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -54,26 +55,12 @@ namespace RgbLed
             }
         }
 
+        Color[] colors = new Color[] { Colors.Red, Colors.Green, Colors.Blue , Colors.Yellow, Colors.Orange, Colors.Turquoise, Colors.White, Color.FromArgb(255, 120, 120, 120), Color.FromArgb(255,50,50,50), Colors.Black };
+
         private void Timer_Tick(object sender, object e)
         {
-            switch (counter++ % 5)
-            {
-                case 0:
-                    SelectedColor.Color = Colors.Red;
-                    break;
-                case 1:
-                    SelectedColor.Color = Colors.Yellow;
-                    break;
-                case 2:
-                    SelectedColor.Color = Colors.Orange;
-                    break;
-                case 3:
-                    SelectedColor.Color = Colors.Turquoise;
-                    break;
-                default:
-                    SelectedColor.Color = Colors.Green;
-                    break;
-            }
+            var pos = counter++ % colors.Length;
+            SelectedColor.Color = colors[pos];
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -96,11 +83,14 @@ namespace RgbLed
                                 {
                                     controller.SetDesiredFrequency(100);
                                     var pinR = controller.OpenPin(5);
-                                    var pinG = controller.OpenPin(6);
-                                    var pinB = controller.OpenPin(7);
+                                    var pinB = controller.OpenPin(6);
+                                    var pinG = controller.OpenPin(13);
                                     led = new RgbLed(pinR, pinG, pinB);
-                                    led.Color = Colors.Green;
                                     led.On();
+                                    led.Color = Colors.White;
+                                    Task.Delay(50).Wait();
+                                    led.Color = Colors.Black;
+
                                 }
                             }
                         }
@@ -110,6 +100,7 @@ namespace RgbLed
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
+                timer.Start();
             }
         }
 
